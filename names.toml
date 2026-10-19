@@ -1,2 +1,3 @@
-# 编号到来源仓库，先到先得、永远跟着它。收录时新占的由 Actions 写回来，别手改已有的。
+# Package ids belong to the first repository that published them, for good (design 37, section 3).
 [names]
+embed = "github.com/miyu-agent/miyu-embed"
