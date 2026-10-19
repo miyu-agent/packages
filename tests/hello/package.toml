@@ -1,0 +1,5 @@
+# 打包模板的自测用的小包，不收录。
+[package]
+name = "Hello"
+version = "0.1.0"
+description = "A tiny package that tests the pack workflow."

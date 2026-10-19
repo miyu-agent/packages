@@ -1,0 +1,74 @@
+# 收录（核心仓库设计 37 第三节第 4 条）：照四份规则收各仓库最新的 Release，写 index.json、签名，发到 Pages。
+# 每天一次；改了规则、手动触发也跑。names.toml 新占的编号由这里写回 main。
+name: collect
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["*.toml", ".github/workflows/collect.yml"]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: collect
+  cancel-in-progress: false
+
+env:
+  # 收录程序取核心仓库的哪一版：升级时改这一行。
+  MIYU_REV: 9c287842826ae00b4b6680e55f5dd912374f353b
+
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: 收录程序的缓存
+        id: tool
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/miyu-index
+          key: miyu-index-${{ env.MIYU_REV }}
+      - name: 编收录程序
+        if: steps.tool.outputs.cache-hit != 'true'
+        run: |
+          rustup toolchain install 1.97.0 --profile minimal
+          cargo +1.97.0 install --locked --git https://github.com/miyu-agent/miyu --rev "$MIYU_REV" miyu-source --bin miyu-index
+      - name: 收
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p site
+          {
+            echo '```'
+            miyu-index build . site
+            echo '```'
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: 签名
+        env:
+          MIYU_INDEX_KEY: ${{ secrets.MIYU_INDEX_KEY }}
+        run: |
+          miyu-index sign site/index.json
+          miyu-index verify site/index.json
+      - name: 写回新占的编号
+        run: |
+          if ! git diff --quiet names.toml; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "names: 收录新占的编号" names.toml
+            git push
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4

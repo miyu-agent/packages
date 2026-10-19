@@ -1,0 +1,100 @@
+# 作者的打包模板（核心仓库设计 37 第二节第 4 条）：在包自己的仓库里打 tag 时调用，照 Miyu 装包的那一套查清单、打成
+# .miyu、传进这个 tag 的 Release。tag 去掉开头的 v 要和清单的 version 一样。用法见本仓库 README。
+name: pack
+
+on:
+  workflow_call:
+    inputs:
+      package:
+        description: 包编号，打进去的文件夹就叫这个名字。
+        type: string
+        required: true
+      folder:
+        description: 包文件夹在仓库里的位置。
+        type: string
+        default: "."
+      target:
+        description: 清单写了 targets 的，打给哪一种系统。
+        type: string
+        default: ""
+      runs-on:
+        description: 在哪种机器上打。
+        type: string
+        default: ubuntu-24.04
+      build:
+        description: 打包前先跑的命令（bash），比如编 bin/ 里的程序。
+        type: string
+        default: ""
+      upload:
+        description: 是 tag 的时候传进 Release；不传的放进这一趟的产物。
+        type: boolean
+        default: true
+      miyu-rev:
+        description: 用核心仓库的哪一版 miyu 打。
+        type: string
+        default: 9c287842826ae00b4b6680e55f5dd912374f353b
+
+jobs:
+  pack:
+    runs-on: ${{ inputs.runs-on }}
+    permissions:
+      contents: write
+    defaults:
+      run:
+        shell: bash
+    env:
+      PACKAGE: ${{ inputs.package }}
+      FOLDER: ${{ inputs.folder }}
+      TARGET: ${{ inputs.target }}
+      MIYU_REV: ${{ inputs.miyu-rev }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: miyu 的缓存
+        id: tool
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/miyu
+            ~/.cargo/bin/miyu.exe
+          key: miyu-${{ runner.os }}-${{ runner.arch }}-${{ inputs.miyu-rev }}
+      - name: 编 miyu
+        if: steps.tool.outputs.cache-hit != 'true'
+        run: |
+          rustup toolchain install 1.97.0 --profile minimal
+          cargo +1.97.0 install --locked --debug --git https://github.com/miyu-agent/miyu --rev "$MIYU_REV" miyu --bin miyu
+      - name: 打包前的命令
+        if: inputs.build != ''
+        run: ${{ inputs.build }}
+      - name: 打包
+        run: |
+          stage="$RUNNER_TEMP/stage/$PACKAGE"
+          mkdir -p "$stage"
+          cp -R "$FOLDER/." "$stage/"
+          rm -rf "$stage/.git" "$stage/.github"
+          args=(pkg pack "$stage" --out "$RUNNER_TEMP/out" --format json)
+          if [ -n "$TARGET" ]; then args+=(--target "$TARGET"); fi
+          miyu "${args[@]}" > "$RUNNER_TEMP/packed.json"
+          cat "$RUNNER_TEMP/packed.json"
+          version=$(sed -n 's/.*"version":"\([^"]*\)".*/\1/p' "$RUNNER_TEMP/packed.json")
+          if [ "$GITHUB_REF_TYPE" = tag ] && [ "${GITHUB_REF_NAME#v}" != "$version" ]; then
+            echo "::error::tag $GITHUB_REF_NAME does not match version $version in package.toml"
+            exit 1
+          fi
+          {
+            echo '```json'
+            cat "$RUNNER_TEMP/packed.json"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: 传进 Release
+        if: inputs.upload && github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$GITHUB_REF_NAME" > /dev/null 2>&1 || gh release create "$GITHUB_REF_NAME" --verify-tag --title "$GITHUB_REF_NAME" --notes "" || true
+          gh release upload "$GITHUB_REF_NAME" "$RUNNER_TEMP"/out/*.miyu --clobber
+      - name: 放进产物
+        if: ${{ !(inputs.upload && github.ref_type == 'tag') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.package }}-${{ runner.os }}-${{ runner.arch }}${{ inputs.target != '' && format('-{0}', inputs.target) || '' }}
+          path: ${{ runner.temp }}/out/*.miyu

@@ -1,0 +1,4 @@
+# 拉黑的：每条写 id 或 origin（或两个都写）和 reason。
+# [[blocked]]
+# id = "example"
+# reason = "why"
