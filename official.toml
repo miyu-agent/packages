@@ -1,2 +1,2 @@
 # 官方的仓库：owner/repo，各取最新的 Release 里的 .miyu。
-repos = []
+repos = ["miyu-agent/miyu-embed"]
