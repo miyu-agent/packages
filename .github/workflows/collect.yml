@@ -21,7 +21,7 @@ concurrency:
 
 env:
   # 收录程序取核心仓库的哪一版：升级时改这一行。
-  MIYU_REV: 9c287842826ae00b4b6680e55f5dd912374f353b
+  MIYU_REV: eabc84606912e07058f743027fa9e3dfe1549914
 
 jobs:
   collect:
