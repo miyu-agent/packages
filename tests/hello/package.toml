@@ -2,4 +2,6 @@
 [package]
 name = { en = "Hello", zh = "你好" }
 version = "0.1.0"
+# 带上作者这一格：打包用的核心版本落后于清单的写法时（例如还不认 author），自测当场红。
+author = "miyu-agent"
 summary = { en = "A tiny package that tests the pack workflow.", zh = "打包模板自测用的小包。" }

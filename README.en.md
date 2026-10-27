@@ -9,6 +9,7 @@ The official package source of Miyu. The index is published at <https://miyu-age
 | File | What it does |
 |---|---|
 | `sources.toml` | Which kinds of sources to collect. Only official repositories for now |
+| `miyu-rev` | Which commit of the core repository collection and the pack template read manifests with: one line. To upgrade, change only this file; both follow |
 | `official.toml` | Official repositories. The `.miyu` files of each one's latest release are collected |
 | `names.toml` | Package id to source repository. First come, first served, and the id stays with that repository. Collection writes new ids back |
 | `blocked.toml` | Blocked ids or repositories, with a reason |
@@ -40,5 +41,6 @@ Push a tag (`v` followed by the `version` in `package.toml`). The template check
 - If the package folder is not the repository root, set `folder`.
 - If programs must be built first, set `build` to a bash script.
 - If the manifest lists `targets`, make one package file per target: use `strategy.matrix` with `runs-on` and `target`.
+- The Miyu version used for packing: without `miyu-rev`, the template uses the one in this repository's `miyu-rev` file, the same one collection uses, so a package that packs is also collected (and the other way round). Set it only to try manifest keys that version does not know yet.
 
 Only official repositories are collected for now. Automatic collection of community packages comes later.

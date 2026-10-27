@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["*.toml", ".github/workflows/collect.yml"]
+    paths: ["*.toml", "miyu-rev", ".github/workflows/collect.yml"]
 
 permissions:
   contents: write
@@ -19,10 +19,6 @@ concurrency:
   group: collect
   cancel-in-progress: false
 
-env:
-  # 收录程序取核心仓库的哪一版：升级时改这一行。
-  MIYU_REV: 880ce2cb1b967f2ca81822ff6fce1d73165375bc
-
 jobs:
   collect:
     runs-on: ubuntu-24.04
@@ -31,6 +27,9 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      # 收录程序取核心仓库的哪一版：照根目录的 miyu-rev，打包模板（pack.yml）不写 miyu-rev 时也照它，两边读清单的是同一版。
+      - name: 核心的版本
+        run: echo "MIYU_REV=$(tr -d '[:space:]' < miyu-rev)" >> "$GITHUB_ENV"
       - name: 收录程序的缓存
         id: tool
         uses: actions/cache@v4

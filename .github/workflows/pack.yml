@@ -30,9 +30,9 @@ on:
         type: boolean
         default: true
       miyu-rev:
-        description: 用核心仓库的哪一版 miyu 打。
+        description: 用核心仓库的哪一版 miyu 打；不写的照软件源仓库根目录的 miyu-rev，和收录同一版。
         type: string
-        default: 9c287842826ae00b4b6680e55f5dd912374f353b
+        default: ""
 
 jobs:
   pack:
@@ -46,9 +46,17 @@ jobs:
       PACKAGE: ${{ inputs.package }}
       FOLDER: ${{ inputs.folder }}
       TARGET: ${{ inputs.target }}
-      MIYU_REV: ${{ inputs.miyu-rev }}
+      MIYU_REV_GIVEN: ${{ inputs.miyu-rev }}
     steps:
       - uses: actions/checkout@v4
+      # 打包和收录照同一版核心读清单：作者没写的照软件源仓库根目录的 miyu-rev（collect.yml 也照它），省得两处漂开。
+      - name: 核心的版本
+        run: |
+          rev="$MIYU_REV_GIVEN"
+          if [ -z "$rev" ]; then
+            rev=$(curl -fsSL https://raw.githubusercontent.com/miyu-agent/packages/main/miyu-rev | tr -d '[:space:]')
+          fi
+          echo "MIYU_REV=$rev" >> "$GITHUB_ENV"
       - name: miyu 的缓存
         id: tool
         uses: actions/cache@v4
@@ -56,7 +64,7 @@ jobs:
           path: |
             ~/.cargo/bin/miyu
             ~/.cargo/bin/miyu.exe
-          key: miyu-${{ runner.os }}-${{ runner.arch }}-${{ inputs.miyu-rev }}
+          key: miyu-${{ runner.os }}-${{ runner.arch }}-${{ env.MIYU_REV }}
       - name: 编 miyu
         if: steps.tool.outputs.cache-hit != 'true'
         run: |
