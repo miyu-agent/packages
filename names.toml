@@ -1,3 +1,5 @@
 # Package ids belong to the first repository that published them, for good (design 37, section 3).
 [names]
 embed = "github.com/miyu-agent/miyu-embed"
+miyu-scripts-dice = "github.com/miyu-agent/miyu-scripts-dice"
+miyu-scripts-weather = "github.com/miyu-agent/miyu-scripts-weather"
