@@ -20,6 +20,7 @@ repos = [
     "miyu-agent/miyu-scripts-tarot",
     "miyu-agent/miyu-scripts-web-image",
     "miyu-agent/miyu-scripts-zhouyi",
+    "miyu-agent/miyu-scripts-ai-draw",
     "miyu-agent/miyu-skills-aur-pkgbuild-review",
     "miyu-agent/miyu-skills-bilibili-live-stream",
     "miyu-agent/miyu-skills-travel-planner",
