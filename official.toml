@@ -24,4 +24,5 @@ repos = [
     "miyu-agent/miyu-skills-aur-pkgbuild-review",
     "miyu-agent/miyu-skills-bilibili-live-stream",
     "miyu-agent/miyu-skills-travel-planner",
+    "miyu-agent/miyu-skills-office",
 ]
