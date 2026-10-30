@@ -1,6 +1,7 @@
 # Package ids belong to the first repository that published them, for good (design 37, section 3).
 [names]
 embed = "github.com/miyu-agent/miyu-embed"
+miyu-scripts-ai-draw = "github.com/miyu-agent/miyu-scripts-ai-draw"
 miyu-scripts-archwiki-query = "github.com/miyu-agent/miyu-scripts-archwiki-query"
 miyu-scripts-bangumi = "github.com/miyu-agent/miyu-scripts-bangumi"
 miyu-scripts-calculator = "github.com/miyu-agent/miyu-scripts-calculator"
