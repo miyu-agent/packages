@@ -1,4 +1,5 @@
-# 收录（核心仓库设计 37 第三节第 4 条）：照四份规则收各仓库最新的 Release，写 index.json、签名，发到 Pages。
+# 收录（核心仓库设计 37 第三节第 4 条）：照四份规则收各仓库最新的 Release，写 index.json、签名，和 stats.json（下载次数，
+# 设计 54，不签名）一起发到 Pages。
 # 每天一次；改了规则、手动触发也跑。names.toml 新占的编号由这里写回 main。
 name: collect
 
@@ -41,14 +42,27 @@ jobs:
         run: |
           rustup toolchain install 1.97.0 --profile minimal
           cargo +1.97.0 install --locked --git https://github.com/miyu-agent/miyu --rev "$MIYU_REV" miyu-source --bin miyu-index
+      # 上一份 index.json、stats.json（核心仓库设计 54）：沿用每个包的上线时刻、问不成的下载次数，攒最近 8 天的下载次数算趋势。
+      # 还没有的（404）从这一次算起；别的错（Pages 一时连不上）整趟不发，省得上线时刻全被冲成今天。
+      - name: 取上一份
+        run: |
+          mkdir -p site
+          for file in index.json stats.json; do
+            code=$(curl -sSL --retry 3 -o "site/$file" -w '%{http_code}' "https://miyu-agent.github.io/packages/$file" || echo 000)
+            case "$code" in
+              200) echo "$file: last one fetched" ;;
+              404) rm -f "site/$file"; echo "$file: none yet" ;;
+              *) echo "::error::$file: HTTP $code"; exit 1 ;;
+            esac
+          done
+      # --github：照各包仓库的全部发布数下载次数（令牌只从 secrets 取，miyu-index 只发给 API，不印出来）。
       - name: 收
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mkdir -p site
           {
             echo '```'
-            miyu-index build . site
+            miyu-index build . site --github
             echo '```'
           } | tee -a "$GITHUB_STEP_SUMMARY"
       - name: 签名
