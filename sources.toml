@@ -1,3 +1,8 @@
-# 照哪几种来源收（设计 37 第三节第 4、5 条）。现在只收官方的；社区自动收录以后加一条 kind = "topic"。
+# 照哪几种来源收（设计 37 第三节第 4、5 条）：官方的（official.toml 列的仓库），和打了 miyu-package 话题的社区仓库
+# （施工 CC-1，2026-11-02 项目主人定：不晾，有问题的照 blocked.toml 拉黑）。
 [[source]]
 kind = "official"
+
+[[source]]
+kind = "topic"
+topic = "miyu-package"
