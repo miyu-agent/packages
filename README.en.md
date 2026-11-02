@@ -13,7 +13,7 @@ The official package source of Miyu. The index is published at <https://miyu-age
 | `official.toml` | Official repositories. The `.miyu` files of each one's latest release are collected |
 | `names.toml` | Package id to source repository. First come, first served, and the id stays with that repository. Collection writes new ids back |
 | `blocked.toml` | Blocked ids or repositories, with a reason |
-| `.github/workflows/collect.yml` | Collects once a day, signs the index and publishes it to Pages. Also runs when the rules change or by hand |
+| `.github/workflows/collect.yml` | Collects once a day, signs the index and publishes it to Pages. Also runs when the rules change or by hand. It also counts downloads across every release of each package, keeps the last 8 days in `stats.json` on Pages (unsigned), and gives each package in the index when it was published, its download count and its downloads over the last 7 days |
 | `.github/workflows/pack.yml` | The packing template for package authors |
 
 The index is signed with Ed25519. The public key is built into `miyu` (key id `f9234109a4740be9`). `miyu` rejects an index whose signature does not verify.
