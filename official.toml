@@ -7,6 +7,7 @@ repos = [
     "miyu-agent/miyu-scripts-bangumi",
     "miyu-agent/miyu-scripts-calculator",
     "miyu-agent/miyu-scripts-codec",
+    "miyu-agent/miyu-scripts-crack-search",
     "miyu-agent/miyu-scripts-deepseek-status",
     "miyu-agent/miyu-scripts-douyin-dl",
     "miyu-agent/miyu-scripts-exchange-rate",
