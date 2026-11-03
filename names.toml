@@ -6,6 +6,7 @@ miyu-scripts-archwiki-query = "github.com/miyu-agent/miyu-scripts-archwiki-query
 miyu-scripts-bangumi = "github.com/miyu-agent/miyu-scripts-bangumi"
 miyu-scripts-calculator = "github.com/miyu-agent/miyu-scripts-calculator"
 miyu-scripts-codec = "github.com/miyu-agent/miyu-scripts-codec"
+miyu-scripts-crack-search = "github.com/miyu-agent/miyu-scripts-crack-search"
 miyu-scripts-deepseek-status = "github.com/miyu-agent/miyu-scripts-deepseek-status"
 miyu-scripts-dice = "github.com/miyu-agent/miyu-scripts-dice"
 miyu-scripts-douyin-dl = "github.com/miyu-agent/miyu-scripts-douyin-dl"
