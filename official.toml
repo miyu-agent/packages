@@ -30,4 +30,5 @@ repos = [
     "miyu-agent/miyu-render",
     "miyu-agent/miyu-memes",
     "miyu-agent/miyu-web",
+    "miyu-agent/miyu-tui",
 ]
