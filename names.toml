@@ -31,5 +31,6 @@ miyu-skills-aur-pkgbuild-review = "github.com/miyu-agent/miyu-skills-aur-pkgbuil
 miyu-skills-bilibili-live-stream = "github.com/miyu-agent/miyu-skills-bilibili-live-stream"
 miyu-skills-office = "github.com/miyu-agent/miyu-skills-office"
 miyu-skills-travel-planner = "github.com/miyu-agent/miyu-skills-travel-planner"
+miyu-webui = "github.com/miyu-agent/miyu-web"
 miyu-webui-theme-claude-style = "github.com/SHORiN-KiWATA/miyu-webui-theme-claude-style"
 miyu-webui-theme-deep-whale = "github.com/SHORiN-KiWATA/miyu-webui-theme-deep-whale"
