@@ -27,7 +27,10 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
+      # 照开跑那一刻的 main 收（不照触发那一刻的提交）：排在别的一趟后面的，前一趟写回的编号也在里面（2026-11-05 手动触发和推送触发的两趟撞过）。
       - uses: actions/checkout@v4
+        with:
+          ref: main
       # 收录程序取核心仓库的哪一版：照根目录的 miyu-rev，打包模板（pack.yml）不写 miyu-rev 时也照它，两边读清单的是同一版。
       - name: 核心的版本
         run: echo "MIYU_REV=$(tr -d '[:space:]' < miyu-rev)" >> "$GITHUB_ENV"
@@ -77,6 +80,7 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git commit -m "names: 收录新占的编号" names.toml
+            git pull --rebase origin main
             git push
           fi
       - uses: actions/configure-pages@v5
