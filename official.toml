@@ -32,4 +32,5 @@ repos = [
     "miyu-agent/miyu-web",
     "miyu-agent/miyu-tui",
     "miyu-agent/miyu-migrate",
+    "miyu-agent/miyu-ocr",
 ]
