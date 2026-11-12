@@ -33,4 +33,5 @@ repos = [
     "miyu-agent/miyu-tui",
     "miyu-agent/miyu-migrate",
     "miyu-agent/miyu-ocr",
+    "SHORiN-KiWATA/miyu-kb-shorinwiki",
 ]
