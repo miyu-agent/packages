@@ -1,6 +1,10 @@
 # Package ids belong to the first repository that published them, for good (design 37, section 3).
 [names]
 embed = "github.com/miyu-agent/miyu-embed"
+fake-id = "github.com/Mymiyu-tool/fake-id"
+github-bot = "github.com/Mymiyu-tool/github-bot"
+gray-intel = "github.com/Mymiyu-tool/gray-intel"
+luckin-coffee = "github.com/Mymiyu-tool/luckin-coffee"
 miyu-embed = "github.com/miyu-agent/miyu-embed"
 miyu-im = "github.com/miyu-agent/miyu-im"
 miyu-im-sponsor = "github.com/miyu-agent/miyu-im"
@@ -38,3 +42,4 @@ miyu-tui-theme-ascii = "github.com/miyu-agent/miyu-tui"
 miyu-webui = "github.com/miyu-agent/miyu-web"
 miyu-webui-theme-claude-style = "github.com/SHORiN-KiWATA/miyu-webui-theme-claude-style"
 miyu-webui-theme-deep-whale = "github.com/SHORiN-KiWATA/miyu-webui-theme-deep-whale"
+ocr = "github.com/miyu-agent/miyu-ocr"
