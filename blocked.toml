@@ -2,3 +2,7 @@
 # [[blocked]]
 # id = "example"
 # reason = "why"
+
+[[blocked]]
+id = "my-package"
+reason = "写包模板（miyu-agent/miyu-package-template）里的占位编号：忘了改名就发版的不收"
