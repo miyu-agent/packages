@@ -8,13 +8,14 @@ Miyu 的官方软件源：索引发在 <https://miyu-agent.github.io/packages/>�
 
 | 文件 | 做什么 |
 |---|---|
-| `sources.toml` | 照哪几种来源收。现在只收官方的仓库 |
+| `sources.toml` | 照哪几种来源收：官方的仓库，和打了 `miyu-package` 话题的社区仓库 |
 | `miyu-rev` | 收录和打包模板用核心仓库的哪一版读清单：一行提交号。升级只改这一个文件，两边跟着走 |
 | `official.toml` | 官方的仓库，各取最新的 Release 里的 `.miyu` |
 | `names.toml` | 编号到来源仓库：先到先得，第一个收录的仓库占住，永远跟着它。新占的由收录写回来 |
 | `blocked.toml` | 拉黑的编号或仓库，和理由 |
 | `.github/workflows/collect.yml` | 每天收一次，签名，发到 Pages。改了规则、手动触发也跑。顺带数各包全部发布的下载次数，最近 8 天的记在 Pages 上的 `stats.json`（不签名），索引里每个包带上线时刻、下载次数、近 7 天的下载次数 |
 | `.github/workflows/pack.yml` | 给包作者用的打包模板 |
+| `.github/workflows/pack-selftest.yml` | 打包模板的自测：改了模板、`miyu-rev` 时在三种系统上把 `tests/hello` 打一遍，不传 Release |
 
 索引用 Ed25519 签名，公钥编在 `miyu` 里（编号 `f9234109a4740be9`）。签名验不过的索引，`miyu` 整份不收。
 

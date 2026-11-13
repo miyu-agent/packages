@@ -8,13 +8,14 @@ The official package source of Miyu. The index is published at <https://miyu-age
 
 | File | What it does |
 |---|---|
-| `sources.toml` | Which kinds of sources to collect. Only official repositories for now |
+| `sources.toml` | Which kinds of sources to collect: official repositories, and community repositories with the `miyu-package` topic |
 | `miyu-rev` | Which commit of the core repository collection and the pack template read manifests with: one line. To upgrade, change only this file; both follow |
 | `official.toml` | Official repositories. The `.miyu` files of each one's latest release are collected |
 | `names.toml` | Package id to source repository. First come, first served, and the id stays with that repository. Collection writes new ids back |
 | `blocked.toml` | Blocked ids or repositories, with a reason |
 | `.github/workflows/collect.yml` | Collects once a day, signs the index and publishes it to Pages. Also runs when the rules change or by hand. It also counts downloads across every release of each package, keeps the last 8 days in `stats.json` on Pages (unsigned), and gives each package in the index when it was published, its download count and its downloads over the last 7 days |
 | `.github/workflows/pack.yml` | The packing template for package authors |
+| `.github/workflows/pack-selftest.yml` | Self-test of the packing template: packs `tests/hello` on all three systems when the template or `miyu-rev` changes, without uploading to a release |
 
 The index is signed with Ed25519. The public key is built into `miyu` (key id `f9234109a4740be9`). `miyu` rejects an index whose signature does not verify.
 
@@ -43,4 +44,4 @@ Push a tag (`v` followed by the `version` in `package.toml`). The template check
 - If the manifest lists `targets`, make one package file per target: use `strategy.matrix` with `runs-on` and `target`.
 - The Miyu version used for packing: without `miyu-rev`, the template uses the one in this repository's `miyu-rev` file, the same one collection uses, so a package that packs is also collected (and the other way round). Set it only to try manifest keys that version does not know yet.
 
-Only official repositories are collected for now. Automatic collection of community packages comes later.
+Community packages are collected automatically (since 2026-11-02): give the repository the `miyu-package` topic and put a `.miyu` file in its latest release, and the daily collection picks it up and marks it as a community package. Ids are first come, first served; abusive ones go into `blocked.toml`. Getting into the official list (`official.toml`) needs the project owner's approval.
