@@ -29,6 +29,7 @@ repos = [
     "miyu-agent/miyu-im",
     "miyu-agent/miyu-render",
     "miyu-agent/miyu-memes",
+    "miyu-agent/miyu-memes-shorin-collection",
     "miyu-agent/miyu-web",
     "miyu-agent/miyu-tui",
     "miyu-agent/miyu-migrate",
