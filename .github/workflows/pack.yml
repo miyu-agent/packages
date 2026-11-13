@@ -78,7 +78,6 @@ jobs:
           stage="$RUNNER_TEMP/stage/$PACKAGE"
           mkdir -p "$stage"
           cp -R "$FOLDER/." "$stage/"
-          rm -rf "$stage/.git" "$stage/.github"
           args=(pkg pack "$stage" --out "$RUNNER_TEMP/out" --format json)
           if [ -n "$TARGET" ]; then args+=(--target "$TARGET"); fi
           miyu "${args[@]}" > "$RUNNER_TEMP/packed.json"
