@@ -1,6 +1,7 @@
 # Package ids belong to the first repository that published them, for good (design 37, section 3).
 [names]
 ai-draw = "github.com/miyu-agent/miyu-scripts-ai-draw"
+antigravity = "github.com/SHORiN-KiWATA/miyu-antigravity"
 archwiki-query = "github.com/miyu-agent/miyu-scripts-archwiki-query"
 aur-pkgbuild-review = "github.com/miyu-agent/miyu-skills-aur-pkgbuild-review"
 bangumi = "github.com/miyu-agent/miyu-scripts-bangumi"
