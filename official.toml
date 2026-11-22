@@ -12,7 +12,7 @@ repos = [
     "miyu-agent/miyu-scripts-douyin-dl",
     "miyu-agent/miyu-scripts-exchange-rate",
     "miyu-agent/miyu-scripts-fortune",
-    "miyu-agent/miyu-scripts-game-compat",
+    "miyu-agent/game-compat",
     "miyu-agent/miyu-scripts-goofish",
     "miyu-agent/miyu-scripts-juya-daily",
     "miyu-agent/miyu-scripts-moegirl-query",
